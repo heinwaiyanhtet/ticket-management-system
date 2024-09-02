@@ -14,5 +14,5 @@ variable "db_password" {
   type        = string
   description = "The master password for the RDS PostgreSQL database"
   sensitive   = true
-  default     = "n@~jpxw%f\"rz`yL5(]4N2H"
+  default     = "n#jpxw%fRzYl5]4N2H"
 }
