@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const handler = async (event) => {
+
     console.log('Received event:', JSON.stringify(event, null, 2));
 
     const employeeid = event.arguments?.employeeId;
@@ -63,6 +64,7 @@ export const handler = async (event) => {
         };
         console.log('Returning ErrorResponse:', JSON.stringify(internalErrorResponse));
         return internalErrorResponse;
+        
     } finally {
         try {
             await prisma.$disconnect();
@@ -71,4 +73,22 @@ export const handler = async (event) => {
             console.error('Error during Prisma client disconnection:', disconnectError);
         }
     }
+
 };
+
+
+// query getUserByEmployeeId {
+//   getUserByEmployeeId(employeeId: 123) {
+//     ... on User {
+//       id
+//       status
+//       name
+//       department
+//       employeeId
+//     }
+//     ... on ErrorResponse {
+//       errorType
+//       message
+//     }
+//   }
+// }
