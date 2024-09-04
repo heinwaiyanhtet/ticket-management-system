@@ -1,16 +1,32 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput, Button, Text, Card } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Picker } from '@react-native-picker/picker';
+import { router } from 'expo-router';
 
 export default function LoginScreen() {
   const [employeeId, setEmployeeId] = useState('');
   const [department, setDepartment] = useState('');
   const [birthday, setBirthday] = useState('');
 
-  const handleLogin = () => {
-    console.log({ employeeId, department, birthday });
+  const handleLogin = async () => {
+      try{
+
+          await AsyncStorage.setItem('employeeId', employeeId);
+          await AsyncStorage.setItem('department', department);
+          await AsyncStorage.setItem('birthday', birthday); 
+
+          Alert.alert('Success', 'Employee information saved successfully!');
+
+          router.push('/');
+
+
+      }catch(error){
+
+      }
   };
 
   return (
@@ -32,14 +48,21 @@ export default function LoginScreen() {
               left={<TextInput.Icon icon="account" />} 
             />
 
-            <TextInput
-              label="Department"
-              value={department}
-              onChangeText={setDepartment}
-              style={styles.input}
-              mode="outlined"
-              left={<TextInput.Icon icon="office-building" />} 
-            />
+            <View style={styles.pickerContainer}>
+              <Text style={styles.pickerLabel}>Department</Text>
+              <Picker
+                selectedValue={department}
+                onValueChange={(itemValue) => setDepartment(itemValue)}
+                style={styles.picker}
+              >
+                <Picker.Item label="Select Department" value="" />
+                <Picker.Item label="HR" value="HR" />
+                <Picker.Item label="Finance" value="Finance" />
+                <Picker.Item label="IT" value="IT" />
+                <Picker.Item label="Marketing" value="Marketing" />
+                <Picker.Item label="Sales" value="Sales" />
+              </Picker>
+            </View>
 
             <TextInput
               label="Birthday"
@@ -94,6 +117,24 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 20,
+  },
+  pickerContainer: {
+    marginBottom: 20,
+    borderColor: '#6200ea',
+    borderWidth: 1,
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  picker: {
+    height: 50,
+    width: '100%',
+    color: '#333',
+  },
+  pickerLabel: {
+    paddingLeft: 10,
+    paddingTop: 10,
+    fontWeight: 'bold',
+    color: '#6200ea',
   },
   loginButton: {
     marginTop: 24,

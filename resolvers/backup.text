@@ -1,0 +1,59 @@
+import { util } from '@aws-appsync/utils';
+
+/**
+ * Sends a request to the attached data source
+ * @param {import('@aws-appsync/utils').Context} ctx - The context object provided by AppSync
+ * @returns {*} The formatted request for the Lambda function
+ */
+export function request(ctx) {
+    // Convert employeeId to a number using the unary plus operator
+    const employeeId = ctx.args.employeeId ? +ctx.args.employeeId : null;
+
+    // Check if employeeId is not a valid number after conversion
+    if (!employeeId) {
+        util.error('Invalid employeeId provided, it must be a valid number.', 'BadRequest');
+    }
+
+    return {
+        version: "2018-05-29",
+        operation: "Invoke",
+        payload: {
+            arguments: {
+                employeeId: employeeId, // Pass the converted employeeId to Lambda
+            },
+        },
+    };
+}
+
+/**
+ * Returns the resolver result
+ * @param {import('@aws-appsync/utils').Context} ctx - The context object containing the result from Lambda
+ * @returns {*} The processed result from the Lambda function or handles errors if any
+ */
+ 
+export function response(ctx) {
+    // Check if the result from Lambda is defined and structured correctly
+    if (!ctx.result) {
+        util.error('Lambda function returned undefined result.', 'InternalServerError');
+    }
+
+    // Check if the Lambda function returned an error object with __typename
+    if (ctx.result.__typename === 'ErrorResponse') {
+        util.error(ctx.result.message, ctx.result.errorType);
+    }
+
+    // If the __typename is User, return the expected fields
+    if (ctx.result.__typename === 'User') {
+        return {
+            __typename: 'User',
+            id: ctx.result.id,
+            status: ctx.result.status,
+            name: ctx.result.name,
+            department: ctx.result.department,
+            employeeId: ctx.result.employeeId,
+        };
+    }
+
+    // If ctx.result has an unexpected type, handle it as an unknown error
+    util.error('Unexpected response structure or typename from Lambda.', 'InternalServerError');
+}

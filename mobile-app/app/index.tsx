@@ -1,12 +1,44 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card, Text, Button, Divider } from 'react-native-paper';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function TicketListScreen() {
+
   const router = useRouter();
+
+  useEffect(() => {
+
+      const checkLoginStatus = async () =>   
+      {  
+
+            try 
+            {
+                  const employeeId = await AsyncStorage.getItem("employeeId");
+                  const departmentId = await AsyncStorage.getItem('department');
+                  const birthday = await AsyncStorage.getItem('birthday');
+
+                  if(!employeeId || !departmentId || !birthday) 
+                  {
+                      router.push('/auth/login');
+                  }
+                  
+            } catch (error) 
+            {
+               console.error('Failed to check login status', error);
+            }
+
+      }
+
+
+      checkLoginStatus();
+
+
+
+  }, [router])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -24,6 +56,7 @@ export default function TicketListScreen() {
             <FontAwesome5 name="building" size={18} color="#6200ea" style={styles.icon} />
             <Text style={styles.infoItem}><Text style={styles.label}>Department:</Text> HR</Text>
           </View>
+          
           <Divider style={styles.divider} />
           
           <View style={styles.infoRow}>
