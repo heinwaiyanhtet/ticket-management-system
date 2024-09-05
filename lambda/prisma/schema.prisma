@@ -13,7 +13,27 @@ model users {
   status     user_status
   name       String      @db.VarChar(255)
   department String?     @db.VarChar(255)
-  employeeid Int @unique
+  employeeid Int         @unique
+  ticket     ticket[]
+}
+
+model curry {
+  id        Int       @id
+  title     String?   @db.VarChar(255)
+  createat  DateTime? @default(now()) @db.Timestamp(6)
+  updatedat DateTime? @default(now()) @db.Timestamp(6)
+  ticket    ticket[]
+}
+
+model ticket {
+  id        Int       @id @default(autoincrement())
+  fordate   DateTime? @db.Timestamp(6)
+  curry_id  Int?
+  user_id   Int?
+  createdat DateTime? @default(now()) @db.Timestamp(6)
+  updatedat DateTime? @default(now()) @db.Timestamp(6)
+  curry     curry?    @relation(fields: [curry_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_curry")
+  users     users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user")
 }
 
 enum user_status {

@@ -3,6 +3,7 @@ import getUserByEmployeeId from './src/handlers/getUserByEmployeeId.mjs';
 import createEmployee from './src/handlers/createEmployee.mjs';
 
 export const handler = async (event) => {
+
     console.log('Received event:', JSON.stringify(event, null, 2));
 
     // Safely access fieldName with a default value and log potential missing info
@@ -20,24 +21,40 @@ export const handler = async (event) => {
     console.log(`Invoked field name: ${fieldName}`);
 
     try {
-        if (fieldName === 'getUserByEmployeeId') {
-            console.log('Processing getUserByEmployeeId request...');
-            const response = await getUserByEmployeeId(event, prisma);
-            console.log('getUserByEmployeeId response:', JSON.stringify(response, null, 2));
-            return response;
-        } else if (fieldName === 'createEmployee') {
-            console.log('Processing createEmployee request...');
-            const response = await createEmployee(event, prisma);
-            console.log('createEmployee response:', JSON.stringify(response, null, 2));
-            return response;
-        } else {
-            console.error('Error: Unknown field name invoked:', fieldName);
-            return {
-                __typename: 'ErrorResponse',
-                errorType: 'UnknownField',
-                message: 'Unknown field name invoked.',
-            };
-        }
+
+
+            if (fieldName === 'getUserByEmployeeId') 
+            {
+                console.log('Processing getUserByEmployeeId request...');
+                const response = await getUserByEmployeeId(event, prisma);
+                console.log('getUserByEmployeeId response:', JSON.stringify(response, null, 2));
+                return response;
+            } 
+
+            else if (fieldName === 'createEmployee') {
+                console.log('Processing createEmployee request...');
+                const response = await createEmployee(event, prisma);
+                console.log('createEmployee response:', JSON.stringify(response, null, 2));
+                return response;
+            } 
+
+            else if(fieldName === 'createTicket') 
+            {
+                console.log('Processing createEmployee request...');
+                const response = await createEmployee(event, prisma);
+                console.log('createEmployee response:', JSON.stringify(response, null, 2));
+                return response;
+            }
+
+            else
+            {
+                console.error('Error: Unknown field name invoked:', fieldName);
+                return {
+                    __typename: 'ErrorResponse',
+                    errorType: 'UnknownField',
+                    message: 'Unknown field name invoked.',
+                };
+            }
     } catch (error) {
         console.error('Error processing request:', error);
         return {
