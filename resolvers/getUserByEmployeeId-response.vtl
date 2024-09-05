@@ -1,0 +1,21 @@
+#set($response = $context.result)
+
+#if($response)
+    #set($typename = $response.get("__typename"))
+    
+    #if($typename == "User")
+        #return($response)
+    #elseif($typename == "ErrorResponse")
+        #return($response)
+    #else
+        #return({
+            "errorType": "MappingTemplate",
+            "message": "Unexpected typename in response: $typename"
+        })
+    #end
+#else
+    #return({
+        "errorType": "MappingTemplate",
+        "message": "Template transformation yielded an empty response."
+    })
+#end

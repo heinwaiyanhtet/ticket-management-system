@@ -1,6 +1,8 @@
 // getUserByEmployeeId.js
-export default async function getUserByEmployeeId(event, prisma) {
+export default async function getUserByEmployeeId(event, prisma){
+
     const employeeid = event.arguments?.employeeId;
+
     console.log(`Extracted employeeId: ${employeeid}`);
 
     if (!employeeid) {
@@ -13,6 +15,7 @@ export default async function getUserByEmployeeId(event, prisma) {
     }
 
     try {
+
         console.log(`Querying database for employeeId: ${employeeid}`);
 
         const user = await prisma.users.findFirst({

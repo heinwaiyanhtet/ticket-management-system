@@ -1,5 +1,6 @@
 // createEmployee.js
-export default async function createEmployee(event, prisma) {
+export default async function createEmployee(event, prisma)
+{
     const input = event.arguments?.input;
     console.log('Received input for creating employee:', JSON.stringify(input, null, 2));
 

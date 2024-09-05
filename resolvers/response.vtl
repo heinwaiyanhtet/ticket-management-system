@@ -1,7 +1,0 @@
-#if($context.result.__typename == "User")
-  #return($context.result)
-#elseif($context.result.__typename == "ErrorResponse")
-  #return($context.result)
-#else
-  $util.error("Unexpected response type from Lambda", "InternalServerError")
-#end
