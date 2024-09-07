@@ -1,0 +1,20 @@
+#set($input = $context.arguments.input)
+
+#if(!$input.forDate || !$input.curryId || !$input.userId)
+    $util.error("Missing required fields for creating ticket.", "BadRequest")
+#else
+    {
+        "version": "2018-05-29",
+        "operation": "Invoke",
+        "payload": {
+        "fieldName": "createTicket",
+            "arguments": {
+                "input": {
+                    "forDate": "$input.forDate",
+                    "curryId": "$input.curryId",
+                    "userId": "$input.userId"
+                }
+            }
+        }
+    }
+#end

@@ -1,8 +1,0 @@
-#set($response = $context.result)
-#if($response.__typename == "User")
-  $util.toJson($response)
-#elseif($response.__typename == "ErrorResponse")
-  $util.toJson($response)
-#else
-  $util.error("Unexpected response type from Lambda", "InternalServerError")
-#end

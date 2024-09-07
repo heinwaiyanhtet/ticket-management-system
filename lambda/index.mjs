@@ -1,6 +1,7 @@
 import prisma from './src/utils/prisma.mjs'; // Use default import from prisma.js
 import getUserByEmployeeId from './src/handlers/getUserByEmployeeId.mjs';
 import createEmployee from './src/handlers/createEmployee.mjs';
+import createTicket from './src/handlers/createTicket.mjs';
 
 export const handler = async (event) => {
 
@@ -10,6 +11,7 @@ export const handler = async (event) => {
     const fieldName = event.fieldName;
 
     if (!fieldName) {
+
         console.error('Error: Missing fieldName in event.info. Full event:', JSON.stringify(event, null, 2));
         return {
             __typename: 'ErrorResponse',
@@ -40,9 +42,9 @@ export const handler = async (event) => {
 
             else if(fieldName === 'createTicket') 
             {
-                console.log('Processing createEmployee request...');
-                const response = await createEmployee(event, prisma);
-                console.log('createEmployee response:', JSON.stringify(response, null, 2));
+                console.log('Processing create ticket request...');
+                const response = await createTicket(event, prisma);
+                console.log('create ticket response:', JSON.stringify(response, null, 2));
                 return response;
             }
 
@@ -55,6 +57,7 @@ export const handler = async (event) => {
                     message: 'Unknown field name invoked.',
                 };
             }
+
     } catch (error) {
         console.error('Error processing request:', error);
         return {
