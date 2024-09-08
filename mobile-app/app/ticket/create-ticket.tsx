@@ -3,6 +3,14 @@ import * as React from 'react';
 import { List, Card, Text, RadioButton, Button } from 'react-native-paper';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { GraphQLResult, generateClient } from 'aws-amplify/api';
+// import amplifyconfig from './src/amplifyconfiguration.json';
+import awsmobile from '../../src/aws-exports';
+import { Amplify } from 'aws-amplify';
+
+Amplify.configure(awsmobile);
+
+const client = generateClient();
 
 export default function CreateTicket() {
   const [expanded, setExpanded] = React.useState<string | null>(null);
@@ -51,6 +59,44 @@ export default function CreateTicket() {
     );
   };
 
+  const handleSubmit = async () => {
+    try {
+      const input = {
+        forDate: new Date().toISOString(), // The current date
+        curryId: "1", // Placeholder, can be dynamic if needed
+        userId: "1", // Placeholder, can be dynamic if needed
+      };
+  
+      const result = await client.graphql({
+        query: `mutation createTicket {
+          createTicket(input: {
+            forDate: "${input.forDate}", 
+            curryId: "${input.curryId}", 
+            userId: "${input.userId}"}) {
+            __typename
+            ... on Ticket {
+              id
+              forDate
+              curryId
+              userId
+              createdAt
+              updatedAt
+            }
+            ... on ErrorResponse {
+              errorType
+              message
+            }
+          }
+        }`,
+      });
+     console.log(result);
+
+    } catch (error) {
+      console.error('Error creating ticket:', error);
+    }
+  };
+  
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
@@ -62,72 +108,70 @@ export default function CreateTicket() {
 
         <View style={styles.accordionContainer}>
           <List.Section title="Meals for the Week" titleStyle={styles.accordionTitle}>
-
             <List.Accordion
-                title="Monday"
-                left={props => <MaterialCommunityIcons {...props} name="food-drumstick" size={24} color="#6200ea" />}
-                expanded={expanded === 'Monday'}
-                onPress={() => handlePress('Monday')}
-                style={styles.accordion}>
-                {renderListItem('Monday', 'Beef')}
-                {renderListItem('Monday', 'Egg')}
+              title="Monday"
+              left={props => <MaterialCommunityIcons {...props} name="food-drumstick" size={24} color="#6200ea" />}
+              expanded={expanded === 'Monday'}
+              onPress={() => handlePress('Monday')}
+              style={styles.accordion}>
+              {renderListItem('Monday', 'Beef')}
+              {renderListItem('Monday', 'Egg')}
             </List.Accordion>
 
             <List.Accordion
-                title="Tuesday"
-                left={props => <MaterialCommunityIcons {...props} name="food-apple" size={24} color="#6200ea" />}
-                expanded={expanded === 'Tuesday'}
-                onPress={() => handlePress('Tuesday')}
-                style={styles.accordion}>
-                {renderListItem('Tuesday', 'Beef')}
-                {renderListItem('Tuesday', 'Egg')}
+              title="Tuesday"
+              left={props => <MaterialCommunityIcons {...props} name="food-apple" size={24} color="#6200ea" />}
+              expanded={expanded === 'Tuesday'}
+              onPress={() => handlePress('Tuesday')}
+              style={styles.accordion}>
+              {renderListItem('Tuesday', 'Beef')}
+              {renderListItem('Tuesday', 'Egg')}
             </List.Accordion>
 
             <List.Accordion
-                title="Wednesday"
-                left={props => <MaterialCommunityIcons {...props} name="food" size={24} color="#6200ea" />}
-                expanded={expanded === 'Wednesday'}
-                onPress={() => handlePress('Wednesday')}
-                style={styles.accordion}>
-                {renderListItem('Wednesday', 'Beef')}
-                {renderListItem('Wednesday', 'Egg')}
+              title="Wednesday"
+              left={props => <MaterialCommunityIcons {...props} name="food" size={24} color="#6200ea" />}
+              expanded={expanded === 'Wednesday'}
+              onPress={() => handlePress('Wednesday')}
+              style={styles.accordion}>
+              {renderListItem('Wednesday', 'Beef')}
+              {renderListItem('Wednesday', 'Egg')}
             </List.Accordion>
 
             <List.Accordion
-                title="Thursday"
-                left={props => <MaterialCommunityIcons {...props} name="food-steak" size={24} color="#6200ea" />}
-                expanded={expanded === 'Thursday'}
-                onPress={() => handlePress('Thursday')}
-                style={styles.accordion}>
-                {renderListItem('Thursday', 'Beef')}
-                {renderListItem('Thursday', 'Egg')}
+              title="Thursday"
+              left={props => <MaterialCommunityIcons {...props} name="food-steak" size={24} color="#6200ea" />}
+              expanded={expanded === 'Thursday'}
+              onPress={() => handlePress('Thursday')}
+              style={styles.accordion}>
+              {renderListItem('Thursday', 'Beef')}
+              {renderListItem('Thursday', 'Egg')}
             </List.Accordion>
 
             <List.Accordion
-                title="Friday"
-                left={props => <MaterialCommunityIcons {...props} name="food-fork-drink" size={24} color="#6200ea" />}
-                expanded={expanded === 'Friday'}
-                onPress={() => handlePress('Friday')}
-                style={styles.accordion}>
-                {renderListItem('Friday', 'Beef')}
-                {renderListItem('Friday', 'Egg')}
+              title="Friday"
+              left={props => <MaterialCommunityIcons {...props} name="food-fork-drink" size={24} color="#6200ea" />}
+              expanded={expanded === 'Friday'}
+              onPress={() => handlePress('Friday')}
+              style={styles.accordion}>
+              {renderListItem('Friday', 'Beef')}
+              {renderListItem('Friday', 'Egg')}
             </List.Accordion>
 
             <List.Accordion
-                title="Saturday"
-                left={props => <MaterialCommunityIcons {...props} name="food-turkey" size={24} color="#6200ea" />}
-                expanded={expanded === 'Saturday'}
-                onPress={() => handlePress('Saturday')}
-                style={styles.accordion}>
-                {renderListItem('Saturday', 'Beef')}
-                {renderListItem('Saturday', 'Egg')}
+              title="Saturday"
+              left={props => <MaterialCommunityIcons {...props} name="food-turkey" size={24} color="#6200ea" />}
+              expanded={expanded === 'Saturday'}
+              onPress={() => handlePress('Saturday')}
+              style={styles.accordion}>
+              {renderListItem('Saturday', 'Beef')}
+              {renderListItem('Saturday', 'Egg')}
             </List.Accordion>
-
           </List.Section>
 
           <Button
             mode="contained"
-            onPress={() => console.log('Selected Items:', selectedItems)}
+            onPress={handleSubmit} // Call handleSubmit when button is pressed
             style={styles.chooseMenuButton}
           >
             Choose Menu

@@ -5,12 +5,11 @@ import { Card, Text, Button, Divider } from 'react-native-paper';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Amplify } from 'aws-amplify';
+import awsmobile from '../src/aws-exports';
 
-// import { Amplify } from 'aws-amplify';
-// import awsmobile from '../src/aws-exports';
-
-// Amplify.configure(awsmobile);
-
+Amplify.configure(awsmobile);
+ 
 
 export default function TicketListScreen() {
 
