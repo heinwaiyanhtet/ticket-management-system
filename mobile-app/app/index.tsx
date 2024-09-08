@@ -6,6 +6,12 @@ import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// import { Amplify } from 'aws-amplify';
+// import awsmobile from '../src/aws-exports';
+
+// Amplify.configure(awsmobile);
+
+
 export default function TicketListScreen() {
 
   const router = useRouter();
@@ -158,6 +164,7 @@ const styles = StyleSheet.create({
   },
   scanButton: {
     backgroundColor: '#03dac5', 
+    marginTop:3,
   },
   buttonLabel: {
     fontSize: 18,

@@ -1,5 +1,6 @@
 {
   "expo": {
+    "entryPoint": "./app/index.tsx",
     "name": "ticket-management-system",
     "slug": "ticket-management-system",
     "version": "1.0.0",
