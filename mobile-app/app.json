@@ -20,7 +20,12 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.hein.wyh.ticketmanagementsystem"
     },
     "web": {
       "bundler": "metro",
@@ -40,6 +45,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "0ac5e32f-9d62-4ed5-9b6d-b6b1c0c282ba"
+      }
     }
   }
 }

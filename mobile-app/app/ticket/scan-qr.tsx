@@ -4,6 +4,7 @@ import { Alert, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-n
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Stack, router } from 'expo-router';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ScanQr() {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -40,6 +41,7 @@ export default function ScanQr() {
         // await delay(10000);
 
         router.replace('/');
+        await AsyncStorage.setItem('scannedStatus', "true"); 
 
         // Example API call when "Mahar_lunch" is detected
         // const response = await axios.post('https://your-api-endpoint.com/mahar-lunch', {

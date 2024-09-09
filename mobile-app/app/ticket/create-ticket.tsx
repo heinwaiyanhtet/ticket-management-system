@@ -61,10 +61,11 @@ export default function CreateTicket() {
 
   const handleSubmit = async () => {
     try {
+
       const input = {
-        forDate: new Date().toISOString(), // The current date
-        curryId: "1", // Placeholder, can be dynamic if needed
-        userId: "1", // Placeholder, can be dynamic if needed
+        forDate: new Date().toISOString(), 
+        curryId: "1", 
+        userId: "1",
       };
   
       const result = await client.graphql({

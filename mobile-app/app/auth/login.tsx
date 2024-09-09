@@ -9,23 +9,23 @@ import { router } from 'expo-router';
 
 export default function LoginScreen() {
   const [employeeId, setEmployeeId] = useState('');
+  const [name, setName] = useState(''); // Added state for name
   const [department, setDepartment] = useState('');
   const [birthday, setBirthday] = useState('');
 
   const handleLogin = async () => {
       try{
-
+          // Storing the user data including name
           await AsyncStorage.setItem('employeeId', employeeId);
+          await AsyncStorage.setItem('name', name); // Save name
           await AsyncStorage.setItem('department', department);
           await AsyncStorage.setItem('birthday', birthday); 
 
           Alert.alert('Success', 'Employee information saved successfully!');
 
           router.push('/');
-
-
       }catch(error){
-
+          console.error('Error saving data:', error);
       }
   };
 
@@ -40,6 +40,16 @@ export default function LoginScreen() {
             <Text style={styles.title}>Employee Login</Text>
 
             <TextInput
+              label="Name"
+              value={name}
+              onChangeText={setName}
+              style={styles.input}
+              mode="outlined"
+              left={<TextInput.Icon icon="account" />} 
+            />
+
+            
+            <TextInput
               label="Employee ID"
               value={employeeId}
               onChangeText={setEmployeeId}
@@ -47,6 +57,9 @@ export default function LoginScreen() {
               mode="outlined"
               left={<TextInput.Icon icon="account" />} 
             />
+
+            {/* Added Name Input */}
+          
 
             <View style={styles.pickerContainer}>
               <Text style={styles.pickerLabel}>Department</Text>
